@@ -19,10 +19,10 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column(name = "userid", nullable = false, unique = true)
-    private long userid;
+    private int userid;
 
     @Column(name = "username", nullable = false)
     private String username;
@@ -33,26 +33,35 @@ public class Post {
     @Column(name = "coverImage")
     private String coverImage;
 
-    @Column(name = "content", columnDefinition = "json")
-    private String content;
+    @Lob
+    @Column(name = "content_text", columnDefinition = "TEXT")
+    private String content_text;
 
-    @Column(name = "tag", columnDefinition = "json")
+    @Column(name = "content_img", columnDefinition = "TEXT")
+    private String content_img;
+    @Column(name = "tag")
     private String tag;
 
-    @ElementCollection
-    @CollectionTable(name = "post_like")
-    @Column(name = "like", columnDefinition = "json")
-    private List<String> like;
+    @Column(name = "like")
+    private int like;
 
-    @ElementCollection
-    @CollectionTable(name = "post_unlike")
-    @Column(name = "unlike", columnDefinition = "json")
-    private List<String> unlike;
+    @Column(name = "unlike")
+    private int unlike;
 
-    @ElementCollection
-    @CollectionTable(name = "comment")
-    @Column(name = "comment", columnDefinition = "json")
-    private List<String> comment;
+//    @ElementCollection
+//    @CollectionTable(name = "post_like")
+//    @Column(name = "like", columnDefinition = "json")
+//    private List<String> like;
+//
+//    @ElementCollection
+//    @CollectionTable(name = "post_unlike")
+//    @Column(name = "unlike", columnDefinition = "json")
+//    private List<String> unlike;
+//
+//    @ElementCollection
+//    @CollectionTable(name = "comment")
+//    @Column(name = "comment", columnDefinition = "json")
+//    private List<String> comment;
 
     @Column(name = "url")
     private String url;
@@ -62,5 +71,5 @@ public class Post {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "creation_date")
-    private Date creation_hdate;
+    private Date creation_date;
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -27,12 +28,28 @@ public class PostController {
     // build create employee REST API
     @PostMapping
     public Post createPost(@RequestBody Post post) {
-        return postRepository.save(post);
+        Post newpost = new Post();
+        newpost.setId(1);
+        newpost.setUserid(1);
+        newpost.setUsername("q");
+        newpost.setTitle("xxx");
+        newpost.setLocation("ssss");
+        newpost.setContent_text("ssss");
+        newpost.setLike(12);
+        newpost.setUnlike(12);
+        newpost.setTag("www");
+        newpost.setContent_img("xxxx");
+        newpost.setCoverImage("pps");
+        newpost.setUrl("wwww");
+        newpost.setCreation_date(new Date());
+
+
+        return postRepository.save(newpost);
     }
 
     // build get employee by id REST API
     @GetMapping("{id}")
-    public ResponseEntity<Post> getEmployeeById(@PathVariable  long id){
+    public ResponseEntity<Post> getEmployeeById(@PathVariable  int id){
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id:" + id));
         return ResponseEntity.ok(post);
