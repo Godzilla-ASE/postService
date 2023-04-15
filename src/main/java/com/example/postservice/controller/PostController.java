@@ -1,15 +1,14 @@
 package com.example.postservice.controller;
 
-import com.example.postservice.exceptions.ResourceNotFoundException;
+import com.example.postservice.DTOMapping.dto.PostPostDTO;
+import com.example.postservice.DTOMapping.Mapper;
+import com.example.postservice.DTOMapping.dto.PutAttitudeDTO;
 import com.example.postservice.entity.Post;
-import com.example.postservice.repository.PostRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.postservice.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -17,69 +16,45 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostService postService;
+
+    PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Post> createPost(@RequestBody PostPostDTO post) {
+        // create Post
+        return ResponseEntity.ok(postService.createPost(Mapper.INSTANCE.convertPostPostDTOtoEntity(post)));
+    }
+
+    @PutMapping("/attitude")
+    public ResponseEntity<Post> attitude(@RequestBody PutAttitudeDTO putAttitudeDTO) {
+        // create Post
+        return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable int id){
+        postService.deletePost(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable int id){
+        return ResponseEntity.ok(postService.getPostById(id));
+    }
 
     @GetMapping
-    public List<Post> getAllEmployees(){
-        return postRepository.findAll();
+    public ResponseEntity<List<Post>> getAllPosts(){
+        return ResponseEntity.ok(postService.getAllPosts());
     }
 
-    // build create employee REST API
-    @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        Post newpost = new Post();
-        newpost.setId(1);
-        newpost.setUserid(1);
-        newpost.setUsername("q");
-        newpost.setTitle("xxx");
-        newpost.setLocation("ssss");
-        newpost.setContent_text("ssss");
-        newpost.setLike(12);
-        newpost.setUnlike(12);
-        newpost.setTag("www");
-        newpost.setContent_img("xxxx");
-        newpost.setCoverImage("pps");
-        newpost.setUrl("wwww");
-        newpost.setCreation_date(new Date());
 
-
-        return postRepository.save(newpost);
+    @PutMapping
+    public ResponseEntity<Post> ModifyPost(@RequestBody Post post) {
+        // create Post
+        return ResponseEntity.ok(postService.modifyPost(post));
     }
 
-    // build get employee by id REST API
-    @GetMapping("{id}")
-    public ResponseEntity<Post> getEmployeeById(@PathVariable  int id){
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id:" + id));
-        return ResponseEntity.ok(post);
-    }
-
-//    // build update employee REST API
-//    @PutMapping("{id}")
-//    public ResponseEntity<Employee> updateEmployee(@PathVariable long id,@RequestBody Employee employeeDetails) {
-//        Employee updateEmployee = employeeRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
-//
-//        updateEmployee.setFirstName(employeeDetails.getFirstName());
-//        updateEmployee.setLastName(employeeDetails.getLastName());
-//        updateEmployee.setEmailId(employeeDetails.getEmailId());
-//
-//        employeeRepository.save(updateEmployee);
-//
-//        return ResponseEntity.ok(updateEmployee);
-//    }
-
-    // build delete employee REST API
-    @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable long id){
-
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
-
-        postRepository.delete(post);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-    }
 }
