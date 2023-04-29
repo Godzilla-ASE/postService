@@ -30,7 +30,7 @@ public class PutAttitudeDTO {
         this.attitude_type = attitude_type;
     }
 
-    public boolean isCancel() {
+    public boolean getisCancel() {
         return isCancel;
     }
 

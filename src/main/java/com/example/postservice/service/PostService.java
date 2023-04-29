@@ -1,5 +1,7 @@
 package com.example.postservice.service;
 
+import com.example.postservice.DTOMapping.dto.GetPostDTO;
+import com.example.postservice.DTOMapping.dto.GetUserDTO;
 import com.example.postservice.DTOMapping.dto.PutAttitudeDTO;
 import com.example.postservice.entity.Post;
 import com.example.postservice.exceptions.ResourceNotFoundException;
@@ -7,7 +9,10 @@ import com.example.postservice.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +22,13 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    private RestTemplate template = new RestTemplate();
+
+    private String URL="http://localhost:8080/users/";
+
     public Post createPost(Post post){
-        post.setLike(0);
-        post.setUnlike(0);
-        post.setCreation_date(new Date());
+        post.setLikeNum(0);
+        post.setUnlikeNum(0);
         post.setComment(null);
 
         return postRepository.save(post);
@@ -33,44 +41,35 @@ public class PostService {
 
         if(putAttitudeDTO.isAttitude_type()) {
             // cancel like
-            if(putAttitudeDTO.isCancel()){
-                post.setLike(post.getLike() - 1);
+            if(putAttitudeDTO.getisCancel()){
+                post.setLikeNum(post.getLikeNum() - 1);
                 String sub = ""+putAttitudeDTO.getUserid();
                 int index = post.getLike_users().indexOf(sub); // 查找子字符串的位置
                 if (index != -1) { // 如果子字符串存在
                     post.setLike_users(post.getLike_users().substring(0, index) + post.getLike_users().substring(index + sub.length()+1)); // 删除子字符串
                 }
             }else{
-                post.setLike(post.getLike() + 1);
-                post.setLike_users("" + putAttitudeDTO.getUserid() + ",");
+                post.setLikeNum(post.getLikeNum() + 1);
+                post.setLike_users(post.getLike_users()+"" + putAttitudeDTO.getUserid() + ",");
             }
         }else{
             // cancel dislike
-            if(putAttitudeDTO.isCancel()){
-                post.setLike(post.getUnlike() - 1);
+            if(putAttitudeDTO.getisCancel()){
+                post.setUnlikeNum(post.getUnlikeNum() - 1);
                 String sub = ""+putAttitudeDTO.getUserid();
                 int index = post.getUnlike_users().indexOf(sub); // 查找子字符串的位置
                 if (index != -1) { // 如果子字符串存在
-                    post.setLike_users(post.getUnlike_users().substring(0, index) + post.getUnlike_users().substring(index + sub.length()+1)); // 删除子字符串
+                    post.setUnlike_users(post.getUnlike_users().substring(0, index) + post.getUnlike_users().substring(index + sub.length()+1)); // 删除子字符串
                 }
             }else{
-                post.setUnlike(post.getUnlike() + 1);
-                post.setUnlike_users("" + putAttitudeDTO.getUserid() + ",");
+                post.setUnlikeNum(post.getUnlikeNum() + 1);
+                post.setUnlike_users(post.getUnlike_users()+"" + putAttitudeDTO.getUserid() + ",");
             }
         }
 
         return postRepository.save(post);
     }
 
-    public Post unlike(int id, int userid){
-
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not exist with id:" + id));
-        post.setUnlike(post.getUnlike()+1);
-        post.setUnlike_users(""+userid+",");
-
-        return postRepository.save(post);
-    }
 
     public void deletePost(int id){
         Post post = postRepository.findById(id)
@@ -90,8 +89,8 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post modifyPost(Post newPost){
-        Post post = postRepository.findById(newPost.getId())
+    public Post modifyPost(int id, Post newPost){
+        Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not exist with id:" + newPost.getId()));
         post.setTag(newPost.getTag());
         post.setLocation(newPost.getLocation());
@@ -105,4 +104,69 @@ public class PostService {
         return post;
     }
 
+    public List<Post> getPostsByUsers(int userid){
+        return postRepository.findByUserid(userid);
+    }
+
+    // ！！change url!
+    public GetUserDTO getUserInfo(int id){
+//        GetUserDTO getUserDTO = template.postForObject(URL + "" + id, null, GetUserDTO.class);
+//        return getUserDTO;
+        GetUserDTO getUserDTO = new GetUserDTO();
+        getUserDTO.setAvatarUrl("image");
+        getUserDTO.setUsername("user1");
+
+        return getUserDTO;
+    }
+
+    public List<GetUserDTO> getUsersByPost(int id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not exist with id:" + id));
+        String ids = post.getLike_users();
+
+        List<GetUserDTO> getUserDTOS = new ArrayList<>();
+
+        List<String> result = Arrays.asList(ids.substring(0,ids.length()-2).split(","));
+
+        for(String i: result){
+            int userid = Integer.parseInt(i);
+            getUserDTOS.add(getUserInfo(userid));
+        }
+
+        return getUserDTOS;
+    }
+
+    public List<Post> getPostsByTag(String tag){
+        List<Post> posts = postRepository.findAll();
+        List<Post> result = new ArrayList<>();
+
+        for(Post post: posts){
+            if(post.getTag()!=null) {
+                int l = post.getTag().length();
+                List<String> tags = Arrays.asList(post.getTag().substring(0, l - 2).split(","));
+
+                for (String t : tags) {
+                    if (t.equals(tag)) {
+                        result.add(post);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public List<Post> getPostsByLocation(String location){
+        List<Post> posts = postRepository.findAll();
+        List<Post> result = new ArrayList<>();
+
+        for(Post post: posts){
+            if (post.getLocation().equals(location)) {
+                result.add(post);
+            }
+        }
+
+        return result;
+    }
 }

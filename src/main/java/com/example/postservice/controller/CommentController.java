@@ -3,6 +3,7 @@ package com.example.postservice.controller;
 
 import com.example.postservice.DTOMapping.Mapper;
 import com.example.postservice.DTOMapping.dto.GetCommentDTO;
+import com.example.postservice.DTOMapping.dto.GetUserDTO;
 import com.example.postservice.DTOMapping.dto.PostCommentDTO;
 import com.example.postservice.DTOMapping.dto.PostReplyDTO;
 import com.example.postservice.entity.Comment;
@@ -44,9 +45,15 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping("/reply/{id}")
+    public ResponseEntity<HttpStatus> deleteReply(@PathVariable int id){
+        commentService.deleteReply(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("{id}")
-    public ResponseEntity<List<GetCommentDTO>> getAllComments(@PathVariable int id){
-        return ResponseEntity.ok(commentService.getAllComments(id));
+    public ResponseEntity<List<GetCommentDTO>> getComments(@PathVariable int id){
+        return ResponseEntity.ok(commentService.getComments(id));
     }
 
 }

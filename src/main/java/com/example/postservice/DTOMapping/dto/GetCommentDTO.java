@@ -19,11 +19,21 @@ public class GetCommentDTO {
 
     private String username;
 
+    private String user_avatar;
+
     private List<GetReplyDTO> reply;
 
     private String content;
 
     private Date creation_date;
+
+    public String getUser_avatar() {
+        return user_avatar;
+    }
+
+    public void setUser_avatar(String user_avatar) {
+        this.user_avatar = user_avatar;
+    }
 
     public Date getCreation_date() {
         return creation_date;

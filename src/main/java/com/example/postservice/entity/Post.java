@@ -40,11 +40,11 @@ public class Post {
     @Column(name = "tag")
     private String tag;
 
-    @Column(name = "like")
-    private int like;
+    @Column(name = "likeNum")
+    private int likeNum;
 
-    @Column(name = "unlike")
-    private int unlike;
+    @Column(name = "unlikeNum")
+    private int unlikeNum;
 
     @Column(name = "like_users")
     private String like_users;
@@ -129,12 +129,20 @@ public class Post {
         return id;
     }
 
-    public int getLike() {
-        return like;
+    public int getLikeNum() {
+        return likeNum;
     }
 
-    public int getUnlike() {
-        return unlike;
+    public int getUnlikeNum() {
+        return unlikeNum;
+    }
+
+    public void setLikeNum(int likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public void setUnlikeNum(int unlikeNum) {
+        this.unlikeNum = unlikeNum;
     }
 
     public String getComment() {
@@ -157,16 +165,8 @@ public class Post {
         this.comment = comment;
     }
 
-    public void setLike(int like) {
-        this.like = like;
-    }
-
     public void setLike_users(String like_users) {
         this.like_users = like_users;
-    }
-
-    public void setUnlike(int unlike) {
-        this.unlike = unlike;
     }
 
     public void setUnlike_users(String unlike_users) {

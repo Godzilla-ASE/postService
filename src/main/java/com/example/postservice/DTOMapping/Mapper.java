@@ -1,7 +1,5 @@
 package com.example.postservice.DTOMapping;
-import com.example.postservice.DTOMapping.dto.PostCommentDTO;
-import com.example.postservice.DTOMapping.dto.PostPostDTO;
-import com.example.postservice.DTOMapping.dto.PostReplyDTO;
+import com.example.postservice.DTOMapping.dto.*;
 import com.example.postservice.entity.Comment;
 import com.example.postservice.entity.Post;
 import com.example.postservice.entity.Reply;
@@ -22,12 +20,48 @@ public interface Mapper {
     @Mapping(target = "url", source="url")
     @Mapping(target = "creation_date", source="creation_date")
     @Mapping(target = "location", source="location")
-    @Mapping(target = "like", ignore = true)
-    @Mapping(target = "unlike", ignore = true)
+    @Mapping(target = "likeNum", ignore = true)
+    @Mapping(target = "unlikeNum", ignore = true)
     @Mapping(target = "like_users", ignore = true)
     @Mapping(target = "unlike_users", ignore = true)
     @Mapping(target = "comment", ignore = true)
     Post convertPostPostDTOtoEntity(PostPostDTO postPostDTO);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "userid", source="userid")
+    @Mapping(target = "title", source="title")
+    @Mapping(target = "coverImage", source="coverImage")
+    @Mapping(target = "content_text", source="content_text")
+    @Mapping(target = "content_img", source="content_img")
+    @Mapping(target = "tag", source="tag")
+    @Mapping(target = "url", source="url")
+    @Mapping(target = "creation_date", source="creation_date")
+    @Mapping(target = "location", source="location")
+    @Mapping(target = "likeNum", source = "likeNum")
+    @Mapping(target = "unlikeNum", source = "unlikeNum")
+    @Mapping(target = "like_users", source = "like_users")
+    @Mapping(target = "unlike_users", source = "like_users")
+    @Mapping(target = "comment", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "user_avatar", ignore = true)
+    GetPostDTO convertPostToGet(Post post);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userid", ignore = true)
+    @Mapping(target = "title", source="title")
+    @Mapping(target = "coverImage", source="coverImage")
+    @Mapping(target = "content_text", source="content_text")
+    @Mapping(target = "content_img", source="content_img")
+    @Mapping(target = "tag", source="tag")
+    @Mapping(target = "url", ignore = true)
+    @Mapping(target = "creation_date", ignore = true)
+    @Mapping(target = "location", source="location")
+    @Mapping(target = "likeNum", ignore = true)
+    @Mapping(target = "unlikeNum", ignore = true)
+    @Mapping(target = "like_users", ignore = true)
+    @Mapping(target = "unlike_users", ignore = true)
+    @Mapping(target = "comment", ignore = true)
+    Post convertPostPutDTOtoEntity(PostPutDTO postPutDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "userid", source="userid")

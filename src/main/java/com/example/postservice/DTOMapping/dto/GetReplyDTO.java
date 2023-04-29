@@ -9,6 +9,25 @@ public class GetReplyDTO {
     private String username_to;
     private String username_from;
 
+    private String userAvatar_to;
+    private String UserAvatar_from;
+
+    public String getUserAvatar_from() {
+        return UserAvatar_from;
+    }
+
+    public String getUserAvatar_to() {
+        return userAvatar_to;
+    }
+
+    public void setUserAvatar_from(String userAvatar_from) {
+        UserAvatar_from = userAvatar_from;
+    }
+
+    public void setUserAvatar_to(String userAvatar_to) {
+        this.userAvatar_to = userAvatar_to;
+    }
+
     private String content;
 
     private Date creation_date;
