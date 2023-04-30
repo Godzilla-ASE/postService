@@ -56,4 +56,14 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getComments(id));
     }
 
+    @GetMapping("/internal/{id}")
+    public ResponseEntity<String> getCommentById(@PathVariable int id){
+        return ResponseEntity.ok(commentService.getCommentById(id));
+    }
+
+    @GetMapping("/reply/{id}")
+    public ResponseEntity<String> getReplyById(@PathVariable int id){
+        return ResponseEntity.ok(commentService.getReplyById(id));
+    }
+
 }

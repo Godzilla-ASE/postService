@@ -125,4 +125,11 @@ public class CommentService {
         return getUserDTO;
     }
 
+    public String getCommentById(int id){
+        return commentRepository.findById(id).get().getContent();
+    }
+    public String getReplyById(int id){
+        return replyRepository.findById(id).get().getContent();
+    }
+
 }

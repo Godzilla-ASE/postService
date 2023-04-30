@@ -10,10 +10,10 @@ public class GetReplyDTO {
     private String username_from;
 
     private String userAvatar_to;
-    private String UserAvatar_from;
+    private String userAvatar_from;
 
     public String getUserAvatar_from() {
-        return UserAvatar_from;
+        return userAvatar_from;
     }
 
     public String getUserAvatar_to() {
@@ -21,7 +21,7 @@ public class GetReplyDTO {
     }
 
     public void setUserAvatar_from(String userAvatar_from) {
-        UserAvatar_from = userAvatar_from;
+        this.userAvatar_from = userAvatar_from;
     }
 
     public void setUserAvatar_to(String userAvatar_to) {

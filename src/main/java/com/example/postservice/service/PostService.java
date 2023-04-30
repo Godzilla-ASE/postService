@@ -169,4 +169,8 @@ public class PostService {
 
         return result;
     }
+
+    public int getUserid(int id){
+        return postRepository.findById(id).get().getUserid();
+    }
 }

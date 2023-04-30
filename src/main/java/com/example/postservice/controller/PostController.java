@@ -20,6 +20,8 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final RestTemplate restTemplate = new RestTemplate();
+    private String URL="http://localhost:9001/notification/";
 
     PostController(PostService postService) {
 
@@ -38,6 +40,13 @@ public class PostController {
         // create Post
         //return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
         postService.attitude(putAttitudeDTO);
+        if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==false){
+            SendUserInfo sendUserInfo = new SendUserInfo();
+            sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
+            sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
+
+            restTemplate.postForObject(URL+"likePost" , sendUserInfo, null);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
