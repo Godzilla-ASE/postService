@@ -21,7 +21,7 @@ public class PostController {
 
     private final PostService postService;
     private final RestTemplate restTemplate = new RestTemplate();
-    private String URL="http://localhost:9001/notification/";
+    private String URL="http://localhost:9001/notification";
 
     PostController(PostService postService) {
 
@@ -44,8 +44,11 @@ public class PostController {
             SendUserInfo sendUserInfo = new SendUserInfo();
             sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
             sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
+            sendUserInfo.setType("LIKE_POST");
+            sendUserInfo.setSend_to_client_id(putAttitudeDTO.getPostid());
+            sendUserInfo.setSend_to_client(postService.getPostById(putAttitudeDTO.getPostid()).getContent_text());
 
-            restTemplate.postForObject(URL+"likePost" , sendUserInfo, null);
+            restTemplate.postForObject(URL, sendUserInfo, null);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

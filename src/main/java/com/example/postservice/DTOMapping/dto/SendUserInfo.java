@@ -6,6 +6,15 @@ public class SendUserInfo {
 
     private int send_to_client_id;
     private String type;
+    private String send_to_client;
+
+    public void setSend_to_client(String send_to_client) {
+        this.send_to_client = send_to_client;
+    }
+
+    public String getSend_to_client() {
+        return send_to_client;
+    }
 
     public void setType(String type) {
         this.type = type;

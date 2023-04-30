@@ -2,16 +2,15 @@ package com.example.postservice.controller;
 
 
 import com.example.postservice.DTOMapping.Mapper;
-import com.example.postservice.DTOMapping.dto.GetCommentDTO;
-import com.example.postservice.DTOMapping.dto.GetUserDTO;
-import com.example.postservice.DTOMapping.dto.PostCommentDTO;
-import com.example.postservice.DTOMapping.dto.PostReplyDTO;
+import com.example.postservice.DTOMapping.dto.*;
 import com.example.postservice.entity.Comment;
 import com.example.postservice.entity.Reply;
 import com.example.postservice.service.CommentService;
+import com.example.postservice.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -21,21 +20,49 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final PostService postService;
 
-    CommentController(CommentService commentService) {
+    private String URL="http://localhost:9001/notification";
+    private RestTemplate restTemplate = new RestTemplate();
+
+    CommentController(CommentService commentService, PostService postService) {
+
         this.commentService = commentService;
+        this.postService = postService;
     }
 
     @PostMapping
     public ResponseEntity<Comment> createComment(@RequestBody PostCommentDTO comment) {
         // create Post
-        return ResponseEntity.ok(commentService.createComment(Mapper.INSTANCE.convertPostCommentDTOtoEntity(comment)));
+        Comment n = commentService.createComment(Mapper.INSTANCE.convertPostCommentDTOtoEntity(comment));
+        SendUserInfo sendUserInfo = new SendUserInfo();
+        sendUserInfo.setUserid_from(n.getUserid());
+        sendUserInfo.setUserid_to(postService.getUserid(n.getPostid()));
+        sendUserInfo.setType("COMMENT");
+        sendUserInfo.setSend_to_client_id(n.getId());
+        sendUserInfo.setSend_to_client(n.getContent());
+
+        restTemplate.postForObject(URL, sendUserInfo, null);
+
+
+        return ResponseEntity.ok(n);
     }
 
     @PostMapping("/reply")
     public ResponseEntity<Reply> createReply(@RequestBody PostReplyDTO reply) {
         // create Post
-        return ResponseEntity.ok(commentService.createReply(Mapper.INSTANCE.convertPostReplyDTOtoEntity(reply)));
+
+        Reply n = commentService.createReply(Mapper.INSTANCE.convertPostReplyDTOtoEntity(reply));
+        SendUserInfo sendUserInfo = new SendUserInfo();
+        sendUserInfo.setUserid_from(n.getUserid_from());
+        sendUserInfo.setUserid_to(n.getUserid_to());
+        sendUserInfo.setType("REPLY");
+        sendUserInfo.setSend_to_client_id(n.getId());
+        sendUserInfo.setSend_to_client(n.getContent());
+
+        restTemplate.postForObject(URL, sendUserInfo, null);
+
+        return ResponseEntity.ok(n);
     }
 
 
