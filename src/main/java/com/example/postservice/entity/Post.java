@@ -41,16 +41,16 @@ public class Post {
     private String tag;
 
     @Column(name = "likeNum")
-    private int likeNum;
+    private int likeNum=0;
 
     @Column(name = "unlikeNum")
-    private int unlikeNum;
+    private int unlikeNum=0;
 
     @Column(name = "like_users")
-    private String like_users;
+    private String like_users="";
 
     @Column(name = "unlike_users")
-    private String unlike_users;
+    private String unlike_users="";
 
     @Column(name = "comment")
     private String comment;

@@ -21,7 +21,7 @@ public class PostController {
 
     private final PostService postService;
     private final RestTemplate restTemplate = new RestTemplate();
-    private String URL="http://localhost:9001/notification";
+    private String URL="http://localhost:9001/users";
 
     PostController(PostService postService) {
 
@@ -32,26 +32,48 @@ public class PostController {
     public ResponseEntity<HttpStatus> createPost(@RequestBody PostPostDTO post) {
         // create Post
         // return ResponseEntity.ok(postService.createPost(Mapper.INSTANCE.convertPostPostDTOtoEntity(post)));
+        // System.out.println("created!");
+        postService.createPost(Mapper.INSTANCE.convertPostPostDTOtoEntity(post));
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/attitude")
-    public ResponseEntity<HttpStatus> attitude(@RequestBody PutAttitudeDTO putAttitudeDTO) {
-        // create Post
-        //return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
-        postService.attitude(putAttitudeDTO);
-        if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==false){
-            SendUserInfo sendUserInfo = new SendUserInfo();
-            sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
-            sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
-            sendUserInfo.setType("LIKE_POST");
-            sendUserInfo.setSend_to_client_id(putAttitudeDTO.getPostid());
-            sendUserInfo.setSend_to_client(postService.getPostById(putAttitudeDTO.getPostid()).getContent_text());
+//    @PutMapping("/attitude")
+//    public ResponseEntity<HttpStatus> attitude(@RequestBody PutAttitudeDTO putAttitudeDTO) {
+//        // create Post
+//        //return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
+//        postService.attitude(putAttitudeDTO);
+//        if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==false){
+//            SendUserInfo sendUserInfo = new SendUserInfo();
+//            sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
+//            sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
+//            sendUserInfo.setType("LIKE_POST");
+//            sendUserInfo.setSend_to_client_id(putAttitudeDTO.getPostid());
+//            sendUserInfo.setSend_to_client(postService.getPostById(putAttitudeDTO.getPostid()).getContent_text());
+//
+//            restTemplate.postForObject(URL, sendUserInfo, null);
+//        }
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+@PutMapping("/attitude")
+public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDTO) {
+    // create Post
+    //return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
+    //System.out.println("send success");
+    postService.attitude(putAttitudeDTO);
+    if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==false){
+        SendUserInfo sendUserInfo = new SendUserInfo();
+        sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
+        sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
+        sendUserInfo.setType("LIKE_POST");
+        sendUserInfo.setSend_to_client_id(putAttitudeDTO.getPostid());
+        sendUserInfo.setSend_to_client(postService.getPostById(putAttitudeDTO.getPostid()).getContent_text());
 
-            restTemplate.postForObject(URL, sendUserInfo, null);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        //restTemplate.postForObject(URL, sendUserInfo, null);
+        //System.out.println("send success");
     }
+    return ResponseEntity.ok("success");
+}
 
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable int id){
@@ -70,6 +92,9 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<GetPostDTO>> getAllPosts(){
+        //System.out.println("send success");
+        //restTemplate.postForObject(URL, null, null);
+
         List<GetPostDTO> getPostDTOS = new ArrayList<>();
         List<Post> posts = postService.getAllPosts();
         for(Post p:posts){
@@ -77,6 +102,8 @@ public class PostController {
             getPostDTO.setUsername(postService.getUserInfo(p.getUserid()).getUsername());
             getPostDTO.setUser_avatar(postService.getUserInfo(getPostDTO.getUserid()).getAvatarUrl());
             getPostDTOS.add(getPostDTO);
+
+            //System.out.println("get post:"+ getPostDTO.getTitle());
         }
         return ResponseEntity.ok(getPostDTOS);
     }

@@ -126,10 +126,18 @@ public class PostService {
 
         List<GetUserDTO> getUserDTOS = new ArrayList<>();
 
-        List<String> result = Arrays.asList(ids.substring(0,ids.length()-2).split(","));
+        System.out.println(ids.length());
+        if(ids.length()>2) {
+            List<String> result = Arrays.asList(ids.substring(0, ids.length() - 1).split(","));
 
-        for(String i: result){
-            int userid = Integer.parseInt(i);
+            // System.out.println(result);
+            for (String i : result) {
+                // System.out.println(i);
+                int userid = Integer.parseInt(i);
+                getUserDTOS.add(getUserInfo(userid));
+            }
+        } else if (ids.length()==2) {
+            int userid = Integer.parseInt(ids.substring(0, 1));
             getUserDTOS.add(getUserInfo(userid));
         }
 
