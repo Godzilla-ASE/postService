@@ -3,6 +3,8 @@ package com.example.postservice.DTOMapping.dto;
 import java.util.Date;
 
 public class GetReplyDTO {
+
+    private int replyId;
     private int userid_from;
 
     private int userid_to;
@@ -11,6 +13,14 @@ public class GetReplyDTO {
 
     private String userAvatar_to;
     private String userAvatar_from;
+
+    public int getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(int replyId) {
+        this.replyId = replyId;
+    }
 
     public String getUserAvatar_from() {
         return userAvatar_from;

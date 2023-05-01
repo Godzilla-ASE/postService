@@ -74,6 +74,7 @@ public class CommentService {
 
                 for (int j = 0; j < replies.size(); j++) {
                     GetReplyDTO g = new GetReplyDTO();
+                    g.setReplyId(replies.get(j).getId());
                     g.setUserid_from(replies.get(j).getUserid_from());
                     g.setUserid_to(replies.get(j).getUserid_to());
                     g.setUsername_from(getUserInfo(replies.get(j).getUserid_from()).getUsername());
