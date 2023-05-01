@@ -8,9 +8,11 @@ import com.example.postservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +22,10 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final RestTemplate restTemplate = new RestTemplate();
-    private String URL="http://localhost:9001/users";
+
+    @Autowired
+    RestTemplate restTemplate;
+    private String URL="http://localhost:10000/notification";
 
     PostController(PostService postService) {
 
@@ -60,16 +64,18 @@ public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDT
     // create Post
     //return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
     //System.out.println("send success");
-    postService.attitude(putAttitudeDTO);
+    Post post = postService.attitude(putAttitudeDTO);
     if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==false){
         SendUserInfo sendUserInfo = new SendUserInfo();
         sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
-        sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
+        sendUserInfo.setUserid_to(postService.getUserid(post.getId()));
         sendUserInfo.setType("LIKE_POST");
-        sendUserInfo.setSend_to_client_id(putAttitudeDTO.getPostid());
-        sendUserInfo.setSend_to_client(postService.getPostById(putAttitudeDTO.getPostid()).getContent_text());
+        sendUserInfo.setSend_to_client_id(post.getId());
+        sendUserInfo.setSend_to_client(post.getContent_text());
 
-        //restTemplate.postForObject(URL, sendUserInfo, null);
+        System.out.println(sendUserInfo.getUserid_to());
+
+        restTemplate.postForObject(URL, sendUserInfo, void.class);
         //System.out.println("send success");
     }
     return ResponseEntity.ok("success");
@@ -148,10 +154,10 @@ public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDT
         return ResponseEntity.ok(getPostDTOS);
     }
 
-    @GetMapping("/location/{location}")
-    public ResponseEntity<List<GetPostDTO>> getPostsByLocation(@PathVariable String location){
+    @PostMapping("/location")
+    public ResponseEntity<List<GetPostDTO>> getPostsByLocation(@RequestBody LocationDTO locationDTO){
         List<GetPostDTO> getPostDTOS = new ArrayList<>();
-        List<Post> posts = postService.getPostsByLocation(location);
+        List<Post> posts = postService.getPostsByLocation(locationDTO.getLocation());
         for(Post p:posts){
             GetPostDTO getPostDTO = Mapper.INSTANCE.convertPostToGet(p);
             getPostDTO.setUsername(postService.getUserInfo(p.getUserid()).getUsername());

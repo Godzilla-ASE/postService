@@ -22,9 +22,10 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    private RestTemplate template = new RestTemplate();
+    @Autowired
+    RestTemplate restTemplate;
 
-    private String URL="http://localhost:8080/users/";
+    private String URL="http://http://172.20.10.2:8080/users";
 
     public Post createPost(Post post){
         post.setLikeNum(0);
@@ -110,8 +111,8 @@ public class PostService {
 
     // ！！change url!
     public GetUserDTO getUserInfo(int id){
-//        GetUserDTO getUserDTO = template.postForObject(URL + "" + id, null, GetUserDTO.class);
-//        return getUserDTO;
+//       GetUserDTO getUserDTO = restTemplate.postForObject(URL + "" + id, null, GetUserDTO.class);
+//       return getUserDTO;
         GetUserDTO getUserDTO = new GetUserDTO();
         getUserDTO.setAvatarUrl("image");
         getUserDTO.setUsername("user1");

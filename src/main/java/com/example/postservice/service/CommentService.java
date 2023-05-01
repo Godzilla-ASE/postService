@@ -26,10 +26,10 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
-    private RestTemplate template = new RestTemplate();
+    @Autowired
+    RestTemplate restTemplate;
 
-
-    private String URL="http://localhost:8080/users/";
+    private String URL="http://localhost:10000/notification";
 
     public Comment createComment(Comment comment){
         return commentRepository.save(comment);

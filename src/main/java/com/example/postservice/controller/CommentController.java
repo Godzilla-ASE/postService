@@ -22,7 +22,7 @@ public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
 
-    private String URL="http://localhost:9001/notification";
+    private String URL="http://localhost:10000/notification";
     private RestTemplate restTemplate = new RestTemplate();
 
     CommentController(CommentService commentService, PostService postService) {
