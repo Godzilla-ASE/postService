@@ -26,7 +26,7 @@ public class Comment {
     private int postid;
 
     @Column(name = "reply")
-    private String reply;
+    private String reply="";
 
     @Lob
     @Column(name = "content", columnDefinition = "TEXT")

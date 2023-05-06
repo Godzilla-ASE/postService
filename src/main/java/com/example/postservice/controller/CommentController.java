@@ -41,7 +41,7 @@ public class CommentController {
         sendUserInfo.setType("COMMENT");
         sendUserInfo.setSend_to_client_id(n.getId());
         sendUserInfo.setSend_to_client(n.getContent());
-        // restTemplate.postForObject(URL, sendUserInfo, null);
+        restTemplate.postForObject(URL, sendUserInfo, null);
 
         System.out.println("create comment successful");
         return ResponseEntity.ok(n);
@@ -59,7 +59,7 @@ public class CommentController {
         sendUserInfo.setSend_to_client_id(n.getId());
         sendUserInfo.setSend_to_client(n.getContent());
 
-        //restTemplate.postForObject(URL, sendUserInfo, null);
+        restTemplate.postForObject(URL, sendUserInfo, null);
 
         return ResponseEntity.ok(n);
     }

@@ -68,7 +68,7 @@ public class CommentService {
 
                 getCommentDTO.setId(comments.get(i).getId());
                 getCommentDTO.setUserid(comments.get(i).getUserid());
-                getCommentDTO.setUsername(getUserInfo(comments.get(i).getId()).getUsername());
+                getCommentDTO.setUsername(getUserInfo(comments.get(i).getUserid()).getUsername());
                 getCommentDTO.setCreation_date(comments.get(i).getCreation_date());
                 getCommentDTO.setUser_avatar(getUserInfo(comments.get(i).getUserid()).getAvatarUrl());
                 getCommentDTO.setContent(comments.get(i).getContent());
@@ -119,7 +119,7 @@ public class CommentService {
         return null;
     }
 
-    // ！！change url!
+    // ！！change url! ----------------------------------------------------------
     public GetUserDTO getUserInfo(int id){
         GetUserDTO getUserDTO = restTemplate.getForObject("http://172.20.10.4:8080/users/" + id, GetUserDTO.class);
         return getUserDTO;

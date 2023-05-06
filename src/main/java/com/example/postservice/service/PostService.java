@@ -110,7 +110,7 @@ public class PostService {
         return postRepository.findByUserid(userid);
     }
 
-    // ！！change url!
+    // ！！change url! -----------------------------------------------------------------
     public GetUserDTO getUserInfo(int id){
        GetUserDTO getUserDTO = restTemplate.getForObject("http://172.20.10.4:8080/users/" + id, GetUserDTO.class);
        return getUserDTO;
