@@ -38,7 +38,7 @@ public class Post {
     private String content_img;
 
     @Column(name = "tag")
-    private String tag;
+    private String tag="";
 
     @Column(name = "likeNum")
     private int likeNum=0;

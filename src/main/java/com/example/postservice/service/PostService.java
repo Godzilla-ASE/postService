@@ -151,7 +151,7 @@ public class PostService {
         List<Post> result = new ArrayList<>();
 
         for(Post post: posts){
-            if(post.getTag()!=null) {
+            if(post.getTag().length()!=0) {
                 int l = post.getTag().length();
                 List<String> tags = Arrays.asList(post.getTag().substring(0, l - 2).split(","));
 
