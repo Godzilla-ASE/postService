@@ -39,6 +39,7 @@ public class PostController {
         // System.out.println("created!");
         postService.createPost(Mapper.INSTANCE.convertPostPostDTOtoEntity(post));
 
+        System.out.println("create post successful");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -73,7 +74,7 @@ public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDT
         sendUserInfo.setSend_to_client_id(post.getId());
         sendUserInfo.setSend_to_client(post.getContent_text());
 
-        System.out.println(sendUserInfo.getUserid_to());
+        System.out.println("attention"+sendUserInfo.getUserid_to());
 
         restTemplate.postForObject(URL, sendUserInfo, void.class);
         //System.out.println("send success");

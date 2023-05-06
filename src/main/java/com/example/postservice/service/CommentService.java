@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,15 +30,17 @@ public class CommentService {
     @Autowired
     RestTemplate restTemplate;
 
-    private String URL="http://localhost:10000/notification";
+    private String URL="http://172.20.10.4:8080/users/";
 
     public Comment createComment(Comment comment){
+        comment.setCreation_date(new Date());
         return commentRepository.save(comment);
     }
     public Reply createReply(Reply reply){
         Comment comment = commentRepository.findById(reply.getCommentid())
                 .orElseThrow(() -> new ResourceNotFoundException("Comment not exist with id: " + reply.getCommentid()));
         comment.setReply(comment.getReply()+","+reply.getId());
+        reply.setCreation_date(new Date());
         return replyRepository.save(reply);
     }
 
@@ -68,6 +71,7 @@ public class CommentService {
                 getCommentDTO.setUsername(getUserInfo(comments.get(i).getId()).getUsername());
                 getCommentDTO.setCreation_date(comments.get(i).getCreation_date());
                 getCommentDTO.setUser_avatar(getUserInfo(comments.get(i).getUserid()).getAvatarUrl());
+                getCommentDTO.setContent(comments.get(i).getContent());
 
                 List<Reply> replies = replyRepository.findByCommentid(comments.get(i).getId());
                 List<GetReplyDTO> getReplyDTO = new ArrayList<>();
@@ -117,13 +121,13 @@ public class CommentService {
 
     // ！！change url!
     public GetUserDTO getUserInfo(int id){
-//        GetUserDTO getUserDTO = template.postForObject(URL + "" + id, null, GetUserDTO.class);
-//        return getUserDTO;
-        GetUserDTO getUserDTO = new GetUserDTO();
-        getUserDTO.setAvatarUrl("image");
-        getUserDTO.setUsername("user1");
-
+        GetUserDTO getUserDTO = restTemplate.getForObject("http://172.20.10.4:8080/users/" + id, GetUserDTO.class);
         return getUserDTO;
+//        GetUserDTO getUserDTO = new GetUserDTO();
+//        getUserDTO.setAvatarUrl("image");
+//        getUserDTO.setUsername("user1");
+//
+//        return getUserDTO;
     }
 
     public String getCommentById(int id){

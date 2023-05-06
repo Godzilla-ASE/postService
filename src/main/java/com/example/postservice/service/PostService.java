@@ -25,12 +25,13 @@ public class PostService {
     @Autowired
     RestTemplate restTemplate;
 
-    private String URL="http://http://172.20.10.2:8080/users";
+    private String URL="http://172.20.10.2:8080/users/";
 
     public Post createPost(Post post){
         post.setLikeNum(0);
         post.setUnlikeNum(0);
         post.setComment(null);
+        post.setCreation_date(new Date());
 
         return postRepository.save(post);
     }
@@ -111,13 +112,13 @@ public class PostService {
 
     // ！！change url!
     public GetUserDTO getUserInfo(int id){
-//       GetUserDTO getUserDTO = restTemplate.postForObject(URL + "" + id, null, GetUserDTO.class);
-//       return getUserDTO;
-        GetUserDTO getUserDTO = new GetUserDTO();
-        getUserDTO.setAvatarUrl("image");
-        getUserDTO.setUsername("user1");
-
-        return getUserDTO;
+       GetUserDTO getUserDTO = restTemplate.getForObject("http://172.20.10.4:8080/users/" + id, GetUserDTO.class);
+       return getUserDTO;
+//        GetUserDTO getUserDTO = new GetUserDTO();
+//        getUserDTO.setAvatarUrl("image");
+//        getUserDTO.setUsername("user1");
+//
+//        return getUserDTO;
     }
 
     public List<GetUserDTO> getUsersByPost(int id){

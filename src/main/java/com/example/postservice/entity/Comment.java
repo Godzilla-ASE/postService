@@ -19,10 +19,10 @@ public class Comment {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "userid", nullable = false)
     private int userid;
 
-    @Column(name = "post_id", nullable = false)
+    @Column(name = "postid", nullable = false)
     private int postid;
 
     @Column(name = "reply")
