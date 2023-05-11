@@ -48,6 +48,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment not exist with id: " + id));
 
+        List<Reply> replies = replyRepository.findByCommentid(id);
+        for(Reply r: replies){
+            replyRepository.delete(r);
+        }
         commentRepository.delete(comment);
     }
 
@@ -121,7 +125,7 @@ public class CommentService {
 
     // ！！change url! ----------------------------------------------------------
     public GetUserDTO getUserInfo(int id){
-        GetUserDTO getUserDTO = restTemplate.getForObject("http://172.20.10.4:8080/users/" + id, GetUserDTO.class);
+        GetUserDTO getUserDTO = restTemplate.getForObject("http://10.21.10.228:8080/users/" + id, GetUserDTO.class);
         return getUserDTO;
 //        GetUserDTO getUserDTO = new GetUserDTO();
 //        getUserDTO.setAvatarUrl("image");
@@ -131,10 +135,19 @@ public class CommentService {
     }
 
     public String getCommentById(int id){
-        return commentRepository.findById(id).get().getContent();
+
+        if(commentRepository.findById(id).get().getContent()!=null){
+            return commentRepository.findById(id).get().getContent();
+        }else{
+            return "Not existed.";
+        }
     }
     public String getReplyById(int id){
-        return replyRepository.findById(id).get().getContent();
+        if(replyRepository.findById(id).get().getContent()!=null){
+            return replyRepository.findById(id).get().getContent();
+        }else{
+            return "Not existed.";
+        }
     }
 
 }

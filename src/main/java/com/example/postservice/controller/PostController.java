@@ -72,12 +72,23 @@ public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDT
         sendUserInfo.setUserid_to(postService.getUserid(post.getId()));
         sendUserInfo.setType("LIKE_POST");
         sendUserInfo.setSend_to_client_id(post.getId());
-        sendUserInfo.setSend_to_client(post.getContent_text());
+        sendUserInfo.setSend_to_client(post.getTitle());
 
         System.out.println("attention"+sendUserInfo.getUserid_to());
 
         restTemplate.postForObject(URL, sendUserInfo, void.class);
         //System.out.println("send success");
+    }else if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==true){
+        SendUserInfo sendUserInfo = new SendUserInfo();
+        sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
+        sendUserInfo.setUserid_to(postService.getUserid(post.getId()));
+        sendUserInfo.setType("LIKE_POST");
+        sendUserInfo.setSend_to_client_id(post.getId());
+        sendUserInfo.setSend_to_client(post.getTitle());
+
+        System.out.println("attention"+sendUserInfo.getUserid_to());
+
+        restTemplate.postForObject("http://localhost:10000/notification/delete", sendUserInfo, void.class);
     }
     return ResponseEntity.ok("success");
 }
@@ -157,6 +168,7 @@ public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDT
 
     @PostMapping("/location")
     public ResponseEntity<List<GetPostDTO>> getPostsByLocation(@RequestBody LocationDTO locationDTO){
+        System.out.println(locationDTO.getLocation());
         List<GetPostDTO> getPostDTOS = new ArrayList<>();
         List<Post> posts = postService.getPostsByLocation(locationDTO.getLocation());
         for(Post p:posts){

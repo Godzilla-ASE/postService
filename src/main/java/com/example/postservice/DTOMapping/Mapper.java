@@ -40,7 +40,7 @@ public interface Mapper {
     @Mapping(target = "likeNum", source = "likeNum")
     @Mapping(target = "unlikeNum", source = "unlikeNum")
     @Mapping(target = "like_users", source = "like_users")
-    @Mapping(target = "unlike_users", source = "like_users")
+    @Mapping(target = "unlike_users", source = "unlike_users")
     @Mapping(target = "comment", ignore = true)
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "user_avatar", ignore = true)

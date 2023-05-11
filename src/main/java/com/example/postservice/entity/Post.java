@@ -31,10 +31,10 @@ public class Post {
     private String coverImage;
 
     @Lob
-    @Column(name = "content_text", columnDefinition = "TEXT")
+    @Column(name = "content_text", columnDefinition = "LONGTEXT")
     private String content_text;
 
-    @Column(name = "content_img", columnDefinition = "TEXT")
+    @Column(name = "content_img", columnDefinition = "LONGTEXT")
     private String content_img;
 
     @Column(name = "tag")
