@@ -25,7 +25,7 @@ public class PostController {
 
     @Autowired
     RestTemplate restTemplate;
-    private String URL="http://localhost:10000/notification";
+    private String URL="http://notify:8083/notification";
 
     PostController(PostService postService) {
 
@@ -88,7 +88,7 @@ public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDT
 
         System.out.println("attention"+sendUserInfo.getUserid_to());
 
-        restTemplate.postForObject("http://localhost:10000/notification/delete", sendUserInfo, void.class);
+        restTemplate.postForObject("http://notify:8083/notification/delete", sendUserInfo, void.class);
     }
     return ResponseEntity.ok("success");
 }

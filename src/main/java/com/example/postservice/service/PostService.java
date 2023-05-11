@@ -136,7 +136,7 @@ public class PostService {
 
     // ！！change url! -----------------------------------------------------------------
     public GetUserDTO getUserInfo(int id){
-       GetUserDTO getUserDTO = restTemplate.getForObject("http://10.21.10.228:8080/users/" + id, GetUserDTO.class);
+       GetUserDTO getUserDTO = restTemplate.getForObject("http://user:8080/users/" + id, GetUserDTO.class);
        return getUserDTO;
 //        GetUserDTO getUserDTO = new GetUserDTO();
 //        getUserDTO.setAvatarUrl("image");

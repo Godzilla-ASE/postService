@@ -30,7 +30,7 @@ public class CommentService {
     @Autowired
     RestTemplate restTemplate;
 
-    private String URL="http://172.20.10.4:8080/users/";
+    private String URL="http://user:8080/users/";
 
     public Comment createComment(Comment comment){
         comment.setCreation_date(new Date());
@@ -125,7 +125,7 @@ public class CommentService {
 
     // ！！change url! ----------------------------------------------------------
     public GetUserDTO getUserInfo(int id){
-        GetUserDTO getUserDTO = restTemplate.getForObject("http://10.21.10.228:8080/users/" + id, GetUserDTO.class);
+        GetUserDTO getUserDTO = restTemplate.getForObject("http://user:8080/users/" + id, GetUserDTO.class);
         return getUserDTO;
 //        GetUserDTO getUserDTO = new GetUserDTO();
 //        getUserDTO.setAvatarUrl("image");
