@@ -19,6 +19,6 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "tagname", nullable = false, unique = true)
+    @Column(name = "tagname", nullable = false)
     private String tagname;
 }
