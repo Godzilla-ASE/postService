@@ -61,13 +61,20 @@ The User Service provides the following API endpoints:
 - `GET /comments/{id}`: Get comments and replies by post id
 - `DELETE /comments/{id}`: Delete comments by comment id
 
-More details can be found in https://docs.google.com/spreadsheets/d/1nK-1bhyr9BWeO70jgLF9rlERT9HntIfBY5a4Xjk5ZaI/edit#gid=0  
+More details can be found in `API_documentation.xlsx`
 
-## Dependency
+## Services Dependency
 
-Post service depends on user service, and mysql service.
+Notification service depends on user service, and mysql service.
 
 ## Testing and continuous integration
+1. Testing
+
+- unit testing to test methods
+- Postman to test endpoints
+
+2. Continuous integration
+- Sonarcube
 
 ## Author
 
