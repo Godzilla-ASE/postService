@@ -40,7 +40,7 @@ Including:
 
 ```bash
 docker run hanyang11/asepostimg:v1.1
-`
+```
 2. The service will be accessible at `http://localhost:8082`.
 
 ## API Endpoints
