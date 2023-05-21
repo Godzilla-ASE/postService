@@ -34,32 +34,10 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> createPost(@RequestBody PostPostDTO post) {
-        // create Post
-        // return ResponseEntity.ok(postService.createPost(Mapper.INSTANCE.convertPostPostDTOtoEntity(post)));
-        // System.out.println("created!");
         postService.createPost(Mapper.INSTANCE.convertPostPostDTOtoEntity(post));
-
-        System.out.println("create post successful");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    @PutMapping("/attitude")
-//    public ResponseEntity<HttpStatus> attitude(@RequestBody PutAttitudeDTO putAttitudeDTO) {
-//        // create Post
-//        //return ResponseEntity.ok(postService.attitude(putAttitudeDTO));
-//        postService.attitude(putAttitudeDTO);
-//        if(putAttitudeDTO.isAttitude_type()==true && putAttitudeDTO.getisCancel()==false){
-//            SendUserInfo sendUserInfo = new SendUserInfo();
-//            sendUserInfo.setUserid_from(putAttitudeDTO.getUserid());
-//            sendUserInfo.setUserid_to(postService.getUserid(putAttitudeDTO.getPostid()));
-//            sendUserInfo.setType("LIKE_POST");
-//            sendUserInfo.setSend_to_client_id(putAttitudeDTO.getPostid());
-//            sendUserInfo.setSend_to_client(postService.getPostById(putAttitudeDTO.getPostid()).getContent_text());
-//
-//            restTemplate.postForObject(URL, sendUserInfo, null);
-//        }
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 @PutMapping("/attitude")
 public ResponseEntity<String> attitude(@RequestBody PutAttitudeDTO putAttitudeDTO) {
     // create Post

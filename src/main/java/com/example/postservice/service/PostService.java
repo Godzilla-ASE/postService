@@ -177,7 +177,7 @@ public class PostService {
         for(Post post: posts){
             if(post.getTag().length()!=0) {
                 int l = post.getTag().length();
-                List<String> tags = Arrays.asList(post.getTag().substring(0, l - 2).split(","));
+                List<String> tags = Arrays.asList(post.getTag().split(","));
 
                 for (String t : tags) {
                     if (t.equals(tag)) {
