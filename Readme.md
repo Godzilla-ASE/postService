@@ -55,7 +55,8 @@ Please ensure that you have a MySQL database running with the specified connecti
 docker run hanyang11/asepostimg:v1.1
 ```
 Please note that because of services dependency, there may be connection issues happened if you only run this single service.
-3. The service will be accessible at `http://localhost:8082`.
+
+2. The service will be accessible at `http://localhost:8082`.
 
 ## API Endpoints
 
