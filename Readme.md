@@ -11,6 +11,18 @@ Including:
 - Modify posts
 - Get comments and replies through postid/comment id
 
+## Framework
+
+Post service uses `Java Springboot` framework and `MYSQL` database. Structure of files follows the specification of Springboot project:
+
+- `controller`: Define endpoints
+- `DTOMapping`: Define structures received from frontend
+- `entity`: Define fields used in MYSQL database
+- `exception`: Define exceptions
+-  `repository`: Used to manipulate database
+- `service`: Main logic of this microservice
+- `utils`: Some tools 
+
 ## Prerequisites
 
 - Java Development Kit (JDK) 8 or higher
@@ -25,7 +37,8 @@ Including:
 - spring.jpa.properties.hibernate.dialect: Sets the Hibernate dialect for MySQL.
 - spring.jpa.hibernate.ddl-auto: Determines how Hibernate handles the database schema updates. The update value indicates that Hibernate will automatically update the schema based on the entity mappings.
 - server.port: Specifies the port on which the application will run locally.
-- Please ensure that you have a MySQL database running with the specified connection details before running the application.
+
+Please ensure that you have a MySQL database running with the specified connection details before running the application.
 
 ## Usage
 
@@ -41,7 +54,8 @@ Including:
 ```bash
 docker run hanyang11/asepostimg:v1.1
 ```
-2. The service will be accessible at `http://localhost:8082`.
+Please note that because of services dependency, there may be connection issues happened if you only run this single service.
+3. The service will be accessible at `http://localhost:8082`.
 
 ## API Endpoints
 
@@ -68,6 +82,8 @@ More details can be found in `API_documentation.xlsx`
 Notification service depends on user service, and mysql service.
 
 ## Testing and continuous integration
+In order to ensure code quality, we did following checks:
+
 1. Testing
 
 - unit testing to test methods
@@ -75,6 +91,8 @@ Notification service depends on user service, and mysql service.
 
 2. Continuous integration
 - Sonarcube
+
+Please see more details in the `Readme.md` of the whole application.
 
 ## Author
 
